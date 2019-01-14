@@ -2,13 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchPostsAndUsers } from '../actions';
 import UserHeader from './UserHeader';
+import {connectAsync} from 'iguazu';
+import {loadPosts} from '../actions/loadPosts';
 
 class PostList extends React.Component {
+
+  /*
   componentDidMount() {
     this.props.fetchPostsAndUsers();
   }
-
+*/
   renderList() {
+    
+    //return <div>{this.props.posts}</div>
+    //console.log("render", this.props.posts);
+ 
+    
     return this.props.posts.map(post => {
       return (
         <div className="item" key={post.id}>
@@ -23,6 +32,8 @@ class PostList extends React.Component {
         </div>
       );
     });
+    
+    
   }
 
   render() {
@@ -30,6 +41,19 @@ class PostList extends React.Component {
   }
 }
 
+function loadDataAsProps({store, ownProps}) {
+  const {dispatch, state} = store;
+  const posts = () => dispatch(loadPosts())
+  return {
+   posts
+  }
+
+  
+}
+
+
+export default connectAsync({loadDataAsProps})(PostList);
+/*
 const mapStateToProps = state => {
   return { posts: state.posts };
 };
@@ -38,3 +62,4 @@ export default connect(
   mapStateToProps,
   { fetchPostsAndUsers }
 )(PostList);
+*/
