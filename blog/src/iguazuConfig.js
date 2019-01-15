@@ -1,29 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-
 import { configureIguazuREST } from 'iguazu-rest';
-
-import App from './components/App';
-import reducers from './reducers';
-
-
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
-
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
-  // other store enhancers if any
-);
-
-const store = createStore(reducers, enhancer);
-
+ 
 configureIguazuREST({
   // the resources you want cached
   resources: {
@@ -45,13 +21,9 @@ configureIguazuREST({
       //transformData: (data, { id, actionType, state }) => massageDataToBeRESTful(data)
     },
     posts: {
-        fetch: () => {
-          console.log("BBBB");
-          return (
-          
-          {
+        fetch: () => ({
             url: `https://jsonplaceholder.typicode.com/posts`
-          })},
+          }),
           //transformData: (data, { id, actionType, state }) => massageDataToBeRESTful(data)
     }
   },
@@ -67,10 +39,3 @@ configureIguazuREST({
   // override state location, defaults to state.resources
   getToState: (state) => state.data.resources
 });
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.querySelector('#root')
-);

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import jsonPlaceholder from '../apis/jsonPlaceholder';
+import { queryResource } from 'iguazu-rest';
 
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   await dispatch(fetchPosts());
@@ -11,21 +12,22 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     .value();
 };
 
-export const fetchPosts = () => async dispatch => {
-  const response = await jsonPlaceholder.get('/posts');
+export const fetchPosts = () => dispatch => {
+console.log("AAAAAAAA");
+  //const response = await jsonPlaceholder.get('/posts');
 
-  dispatch({ type: 'FETCH_POSTS', payload: response.data });
+  //dispatch({ type: 'FETCH_POSTS', payload: response.data });
+  const res = queryResource({ resource: 'posts'});
+  console.log("res", res);
+  dispatch(res);
 };
 
 export const fetchUser = id => async dispatch => {
-  const response = await jsonPlaceholder.get(`/users/${id}`);
+  //const response = await jsonPlaceholder.get(`/users/${id}`);
 
-  dispatch({ type: 'FETCH_USER', payload: response.data });
+  //dispatch({ type: 'FETCH_USER', payload: response.data });
+
+  dispatch(queryResource({ resource: 'users', id}))
 };
 
-// export const fetchUser = id => dispatch => _fetchUser(id, dispatch);
-// const _fetchUser = _.memoize(async (id, dispatch) => {
-//   const response = await jsonPlaceholder.get(`/users/${id}`);
 
-//   dispatch({ type: 'FETCH_USER', payload: response.data });
-// });
