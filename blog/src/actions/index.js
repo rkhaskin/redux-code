@@ -3,15 +3,10 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 
 import { queryResource, queryCollection } from 'iguazu-rest';
 
-export const fetchPostsAndUsers = () => async (dispatch, getState) => {
-  await dispatch(fetchPosts());
+export const fetchPostsAndUsers = () => (dispatch, getState) => {
+   dispatch(fetchPosts());
 
-  _.chain(getState().posts)
-    .map('userId')
-    .uniq()
-    .forEach(id => dispatch(fetchUser(id)))
-    .value();
-};
+  };
 
 export const fetchPosts = () =>   dispatch => {
 console.log("AAAAAAAA");
@@ -23,12 +18,6 @@ console.log("AAAAAAAA");
   //dispatch(res);
 };
 
-export const fetchUser = id => dispatch => {
-  //const response = await jsonPlaceholder.get(`/users/${id}`);
 
-  //dispatch({ type: 'FETCH_USER', payload: response.data });
-
-  dispatch(queryResource({ resource: 'users', id}))
-};
 
 
