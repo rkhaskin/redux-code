@@ -4,26 +4,14 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import { configureIguazuREST } from 'iguazu-rest';
+
+
 
 import App from './components/App';
 import reducers from './reducers';
+import {configureIguazuREST} from 'iguazu-rest';
 
-
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
-
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
-  // other store enhancers if any
-);
-
-const store = createStore(reducers, enhancer);
-
+console.log("1111111111");
 configureIguazuREST({
   // the resources you want cached
   resources: {
@@ -52,7 +40,7 @@ configureIguazuREST({
           {
             url: `https://jsonplaceholder.typicode.com/posts`
           })},
-          //transformData: (data, { id, actionType, state }) => massageDataToBeRESTful(data)
+          transformData: (data, { id, actionType, state }) => console.log(actionType)
     }
   },
   // opts that will be sent along with every resource request
@@ -67,6 +55,21 @@ configureIguazuREST({
   // override state location, defaults to state.resources
   getToState: (state) => state.data.resources
 });
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    }) : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(thunk),
+  // other store enhancers if any
+);
+
+const store = createStore(reducers, enhancer);
+
+
 
 ReactDOM.render(
   <Provider store={store}>
