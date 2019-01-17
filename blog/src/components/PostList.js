@@ -1,8 +1,9 @@
 import React from 'react';
 import UserHeader from './UserHeader';
 import {connectAsync} from 'iguazu';
-import {loadPosts} from '../actions/loadPosts';
+import {fetchPosts} from '../actions';
 import {queryCollection} from 'iguazu-rest';
+import {loadPosts} from '../actions/loadPosts';
 
 class PostList extends React.Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class PostList extends React.Component {
 
 function loadDataAsProps({store : {dispatch}}) {
   return {
-    posts: () => dispatch(queryCollection({ resource:  'posts' }))
+    posts: () => dispatch(loadPosts())
   }
 }
 

@@ -12,9 +12,11 @@ export const fetchPostsAndUsers = () => (dispatch, getState) => {
 */    
 };
 
-const fetchPosts = () => (dispatch, getState) => {
-  console.log("777", getState())
-  dispatch(queryCollection({ resource:  'posts' }));
+export const fetchPosts = function(dispatch) {
+  return function (dispatch) {
+    dispatch(queryCollection({ resource: 'posts' }));
+  };
+  //return dispatch(queryCollection({ resource:  'posts' }));
 };
 
 export const fetchUser = id => dispatch => {
