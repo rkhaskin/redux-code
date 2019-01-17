@@ -7,17 +7,19 @@ import App from './components/App';
 import reducers from './reducers';
 import {configureIguazuREST} from 'iguazu-rest';
 
+const store = createStore(reducers, applyMiddleware(thunk));
+
 configureIguazuREST({
   resources: {
     posts: {
         fetch: () => ({ url: `https://jsonplaceholder.typicode.com/posts` }),
-          transformData: (data, {actionType, state }) => data
+          transformData: (data, {actionType, state }) => {console.log(data); return data}
     }
   },
-  getToState: (state) => state.data.resources
+  getToState: (state) => state.resources
 });
 
-const store = createStore(reducers, applyMiddleware(thunk));
+
 
 ReactDOM.render(
   <Provider store={store}>
