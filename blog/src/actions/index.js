@@ -4,6 +4,7 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   await dispatch(fetchPosts());
 
+  // at this point the state will be updated with posts.
   _.chain(getState().posts)
     .map('userId')
     .uniq()
@@ -14,13 +15,15 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 export const fetchPosts = () => async dispatch => {
   const response = await jsonPlaceholder.get('/posts');
 
+  // call dispatch with the action object. Will be forwarded to the reducer
   dispatch({ type: 'FETCH_POSTS', payload: response.data });
 };
 
 export const fetchUser = id => async dispatch => {
   const response = await jsonPlaceholder.get(`/users/${id}`);
 
-  dispatch({ type: 'FETCH_USER', payload: response.data });
+// call dispatch with the action object. Will be forwarded to the reducer
+dispatch({ type: 'FETCH_USER', payload: response.data });
 };
 
 // export const fetchUser = id => dispatch => _fetchUser(id, dispatch);

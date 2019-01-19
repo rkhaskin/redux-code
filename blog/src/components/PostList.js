@@ -42,7 +42,9 @@ class PostList extends React.Component {
 }
 
 function loadDataAsProps({store, ownProps}) {
+  // once hooked up to redux, we get access to dispatch function and state object
   const {dispatch, state} = store;
+  // dispatch action
   const posts = () => dispatch(loadPosts())
   return {
    posts
