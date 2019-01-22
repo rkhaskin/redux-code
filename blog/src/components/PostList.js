@@ -1,9 +1,12 @@
 import React from 'react';
 import UserHeader from './UserHeader';
-import {connectAsync} from 'iguazu';
-import {fetchPosts} from '../actions';
-import {queryCollection} from 'iguazu-rest';
-import {loadPosts} from '../actions/loadPosts';
+import {connectAsync, sequence} from 'iguazu';
+import {fetchPosts, fetchUsers, testPosts} from '../actions';
+import {queryCollection} from '../iguazu-rest/actions/query';
+import {loadPosts, loadUsers} from '../actions/loadPosts';
+import _ from 'lodash';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 class PostList extends React.Component {
   constructor(props) {
@@ -11,8 +14,21 @@ class PostList extends React.Component {
     
     console.log(props);
 
+    // const state = {
+    //   posts: [],
+    //   users: [],
+    //   dispatch: {}
+    // }
+
+    
+
   }
+
+
+
   renderList() {
+    // if (this.props.isLoading())
+    //    return;
     console.log("333", this.props.posts);
     return this.props.posts.map(post => {
       return (
@@ -22,6 +38,7 @@ class PostList extends React.Component {
             <div className="description">
               <h2>{post.title}</h2>
               <p>{post.body}</p>
+
             </div>
           </div>
         </div>
@@ -33,14 +50,42 @@ class PostList extends React.Component {
 
   render() {
     return <div className="ui relaxed divided list">{this.renderList()}</div>;
+   
   }
 }
 
-function loadDataAsProps({store : {dispatch}}) {
-  return {
-    posts: () => dispatch(loadPosts())
-  }
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//   users: (id) => dispatch(loadUsers(id)),
+//   test: (users) => dispatch(testPosts(users))
+//   }
+// }
 
+ function loadDataAsProps({store : {dispatch}}) {
+   //this.dispatch = dispatch;
+   return {
+     posts: () => dispatch(loadPosts())
 
-export default connectAsync({loadDataAsProps})(PostList);
+   }
+ }
+// function loadDataAsProps({store : {dispatch}}) {
+//   const sequenceLoadFunctions = sequence([
+//     { key: 'posts', handler: () => dispatch(loadPosts()) },
+//     { key: 'users', handler: ({ posts }) => dispatch(loadUsers(posts)) }
+//   ]);
+
+//   return {
+//     ...sequenceLoadFunctions
+//   };
+// }
+
+// const hocChain = compose(
+//   connect(
+//     null,
+//     mapDispatchToProps
+//   ),
+//   connectAsync({ loadDataAsProps })
+// );
+
+export default connectAsync({ loadDataAsProps })(PostList);
+//export default hocChain(PostList);

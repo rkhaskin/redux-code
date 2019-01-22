@@ -1,29 +1,39 @@
 import _ from 'lodash';
-import { queryResource, queryCollection } from 'iguazu-rest';
+import { queryResource, queryCollection } from '../iguazu-rest/actions/query';
 
 export const fetchPostsAndUsers = () => (dispatch, getState) => {
-   const fetchPostsRes = fetchPosts(dispatch);
-   console.log("fetchPosts", fetchPostsRes)
-   const obj = dispatch(fetchPostsRes);
-   console.log("obj", obj);
-   
-   demo();
-   console.log("YYYYYYYY", getState());
+   const obj = dispatch(fetchPosts(dispatch));
 
-  _.chain(getState().posts)
-    .map('userId')
-    .uniq()
-    .forEach(id => dispatch(fetchUser(id)))
-    .value();
-    
-    return obj;
+   console.log("QQQQ", obj);
+   console.log("FFFF", getState().posts)
+
+  //  const users = _.chain(obj.data)
+  // .map('userId')
+  // .uniq()
+  // .forEach(id => dispatch(fetchUser(id)))
+  // .value();
+   return obj;
 };
+
+export const fetchUsers = (posts) => (dispatch) => {
+  // const users = _.chain(posts)
+  // .map('userId')
+  // .uniq()
+  // .forEach(id => dispatch(fetchUser(id)))
+  // .value();
+
+  const mapped = _.map(posts, 'userId');
+  const mappedUniq = _.uniq(mapped);
+  //const call = _.forEach(mappedUniq, id => console.log("UU", id));
+  const call = _.forEach(mappedUniq, function(id) {return dispatch(fetchUser(id))});
+  const val = call.value();
+
+  return dispatch(val);
+}
 
 export const fetchPosts = function(dispatch) {
   return function (dispatch) {
-    const col = queryCollection({ resource: 'posts' })
-    console.log("Col", col)
-    return dispatch(col);
+    return dispatch(queryCollection({ resource: 'posts' }));
   };
 };
 
@@ -32,7 +42,7 @@ export const fetchUser = id => dispatch => {
   //const response = await jsonPlaceholder.get(`/users/${id}`);
 
   //dispatch({ type: 'FETCH_USER', payload: response.data });
-  dispatch(queryResource({ resource:  'user', id }));
+  return dispatch(queryResource({ resource:  'users', id }));
 };
 
 function sleep(ms) {
@@ -45,4 +55,16 @@ async function demo() {
   console.log('Two seconds later');
 }
 
+export const testPosts = function(users) {
+
+  return function (dispatch) {
+    console.log("WWWW", users);
+    const userArray = _.map(users, id => {
+      return dispatch(fetchUser(id));
+    })
+     //const res = await dispatch(users);
+     console.log("BBBBBB", userArray);
+     //eturn res;
+  }
+}
 

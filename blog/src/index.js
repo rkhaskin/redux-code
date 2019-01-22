@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 
 import App from './components/App';
 import reducers from './reducers';
-import {configureIguazuREST} from 'iguazu-rest';
+import {configureIguazuREST} from './iguazu-rest/config';
 
 
 const composeEnhancers =
@@ -24,11 +24,17 @@ const store = createStore(reducers, enhancer);
 
 configureIguazuREST({
   resources: {
-    user: {
+    users: {
       fetch: () => ({
-        url: `https://jsonplaceholder.typicode.com/users/:id`,
-        transformData: (data, { id, actionType, state }) => data
+        url: `https://jsonplaceholder.typicode.com/users/:id`
       }),
+      transformData: (data, store, whatever) => {
+        const { id, actionType, state } = store;
+        console.log("store", store);
+        console.log("qqq", whatever);
+        processUser(data, id, actionType, state)
+        return data;
+      }
     },
     posts: {
       fetch: () => ({
@@ -46,6 +52,18 @@ configureIguazuREST({
   }
 });
 
+function processUser(data, id, actionType, state) {
+  console.log("data", data);
+  console.log("id", id);
+  console.log("actionType", actionType);
+  console.log("state", state);
+  // switch (action.type) {
+  //   case 'FETCH_USER':
+  //     return [...state, action.payload];
+  //   default:
+  //     return state;
+  // }
+};
 
 ReactDOM.render(
   <Provider store={store}>
