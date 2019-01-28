@@ -48,6 +48,7 @@ async function getAsyncData({ resource, id, opts, actionType, state }) {
   const { resources, defaultOpts, baseFetch } = config;
   const { url, opts: resourceOpts } = resources[resource].fetch(id, actionType, state);
 
+  // deepmerge merges 
   const fetchOpts = merge.all([
     { method: actionTypeMethodMap[actionType] },
     defaultOpts || {},

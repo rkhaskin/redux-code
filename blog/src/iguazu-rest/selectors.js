@@ -60,7 +60,8 @@ export function collectionIsLoaded({ resource, id, opts }) {
 
 export function getCollection({ resource, id, opts }) {
   return (state) => {
-    const resourceState = config.getToState(state).get(resource, iMap());
+    const getToState = config.getToState(state);
+    const resourceState = getToState.get(resource, iMap());
     const idHash = getCollectionIdHash(id);
     const queryHash = getQueryHash(opts);
     const error = resourceState.getIn(['collections', idHash, queryHash, 'error']);

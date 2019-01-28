@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { queryResource, queryCollection } from '../iguazu-rest/actions/query';
 
 export const fetchPostsAndUsers = () => (dispatch, getState) => {
-   const obj = dispatch(fetchPosts(dispatch));
+   const obj = dispatch(fetchPosts());
 
    console.log("QQQQ", obj);
    console.log("FFFF", getState().posts)
@@ -12,7 +12,7 @@ export const fetchPostsAndUsers = () => (dispatch, getState) => {
   // .uniq()
   // .forEach(id => dispatch(fetchUser(id)))
   // .value();
-   return obj;
+    return obj;
 };
 
 export const fetchUsers = (posts) => (dispatch) => {
@@ -31,7 +31,7 @@ export const fetchUsers = (posts) => (dispatch) => {
   return dispatch(val);
 }
 
-export const fetchPosts = function(dispatch) {
+export const fetchPosts = function() {
   return function (dispatch) {
     return dispatch(queryCollection({ resource: 'posts' }));
   };

@@ -69,7 +69,10 @@ export function resourceReducer(state, action) {
       const { id, opts, promise } = action;
       const collectionIdHash = getCollectionIdHash(id);
       const queryHash = getQueryHash(opts);
-      return state.update('loading', map => map.setIn([collectionIdHash, queryHash], promise));
+      const loadingObj = state.update('loading', map => {
+          return map.setIn([collectionIdHash, queryHash], promise)
+      });
+      return loadingObj;
     }
 
     case CREATE_STARTED: {
@@ -117,7 +120,8 @@ export function resourceReducer(state, action) {
       const resourceMap = data instanceof Array ?
         data.reduce((map, resource) => {
           const resourceIdHash = getResourceIdHash(resource[idKey]);
-          return Object.assign(map, { [resourceIdHash]: resource });
+          const elem = Object.assign(map, { [resourceIdHash]: resource });
+          return elem;
         }, {}) : {};
       const associatedIds = Object.keys(resourceMap);
       return state.withMutations(resourceState =>
