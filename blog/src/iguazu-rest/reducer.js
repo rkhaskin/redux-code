@@ -127,7 +127,7 @@ export function resourceReducer(state, action) {
       return state.withMutations(resourceState =>
         resourceState
           .deleteIn(['loading', collectionIdHash, queryHash])
-          .update('loading', loading => (loading.get(collectionIdHash, iMap()).isEmpty() ? loading.delete(collectionIdHash) : loading))
+               .update('loading', loading => (loading.get(collectionIdHash, iMap()).isEmpty() ? loading.delete(collectionIdHash) : loading))
           .mergeIn(['items'], fromJS(resourceMap))
           .setIn(
             ['collections', collectionIdHash, queryHash],

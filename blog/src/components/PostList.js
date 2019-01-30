@@ -1,10 +1,11 @@
 import React from 'react';
 import UserHeader from './UserHeader';
-import {connectAsync, sequence} from 'iguazu';
+import {connectAsync, sequence} from '../iguazu';
 import {fetchPosts, fetchUsers, testPosts} from '../actions';
 import {queryCollection} from '../iguazu-rest/actions/query';
 import {loadPosts, loadUsers} from '../actions/loadPosts';
 import _ from 'lodash';
+
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
@@ -24,9 +25,13 @@ class PostList extends React.Component {
 
   }
 
-
+  
 
   renderList() {
+
+    if (this.props.isLoading()) {
+      return <div>Loading Posts...</div>
+    }
     // if (this.props.isLoading())
     //    return;
     console.log("333", this.props.posts);
@@ -61,7 +66,7 @@ class PostList extends React.Component {
 //   }
 // }
 
- function loadDataAsProps({store : {dispatch}}) {
+ function loadDataAsProps({store : {dispatch, getState}}) {
    //this.dispatch = dispatch;
    return {
      posts: () => dispatch(loadPosts())

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { queryResource, queryCollection } from '../iguazu-rest/actions/query';
+import {resourceIsLoaded} from '../iguazu-rest/selectors';
 
 export const fetchPostsAndUsers = () => (dispatch, getState) => {
    const obj = dispatch(fetchPosts());
@@ -7,11 +8,20 @@ export const fetchPostsAndUsers = () => (dispatch, getState) => {
    console.log("QQQQ", obj);
    console.log("FFFF", getState().posts)
 
-  //  const users = _.chain(obj.data)
-  // .map('userId')
-  // .uniq()
-  // .forEach(id => dispatch(fetchUser(id)))
-  // .value();
+   const obj2 = dispatch(fetchPosts());
+   console.log("posts PPP", obj2)
+
+
+   if (obj.status === 'complete') {
+    const users = _.chain(obj.data)
+    .map('userId')
+    .uniq()
+    .forEach(id => dispatch(fetchUser(id)))
+    .value();
+
+   }
+
+
     return obj;
 };
 

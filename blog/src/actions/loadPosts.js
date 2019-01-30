@@ -1,5 +1,6 @@
 import {fetchPostsAndUsers, fetchUser} from './index';
 
+
 export function loadPosts(param) {
  
     return (dispatch, getState) => {
